@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
+    public float maxPaddleSpeed = 20f;
+    public float paddleForce = 1f;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -13,18 +17,12 @@ public class Paddle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Down
-        if (Input.GetKey(KeyCode.S))
-        {
-            Transform paddleTransform = GetComponent<Transform>();
-            paddleTransform.position += new Vector3(0f, 0f, -1f * Time.deltaTime);
-        }
+        float movementAxis = Input.GetAxis("LeftPaddle");
+        Transform paddleTransform = GetComponent<Transform>();
 
-        //Up
-        if (Input.GetKey(KeyCode.W))
-        {
-            Transform paddleTransform = GetComponent<Transform>();
-            paddleTransform.position += new Vector3(0f, 0f, +1f * Time.deltaTime);
-        }
+        Vector3 newPosition = paddleTransform.position + new Vector3(0f, 0f, movementAxis * maxPaddleSpeed * Time.deltaTime);
+        newPosition.z = Math.Clamp(newPosition.z, -2.2f, -2.2f);
+        
+        paddleTransform.position = newPosition;
     }
 }
